@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spell Bound - Regular</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>Spell Bound</h1>
+        <ul>
+            <li><a href="daily.html">Daily</a></li>
+            <li><a href="regular.html">Regular</a></li>
+        </ul>
+    </nav>
+    <header>
+        <h1>Regular Mode</h1>
+        <br>
+        <p>Test your spelling skills with a random word!</p>
+        <p>Click the button to hear the word, type it in the input box, and submit your answer.</p>
+    </header>
+    <main>
+        <button id="sound-btn">🔊 Play Word</button>
+        <p class="keybind">Alt+A</p>    
+        <p>Definition: <span id="definition">Loading...</span></p>
+        
+        <div> 
+            <input type="text" spellcheck="false" id="text-input" placeholder="Type the word here...">
+            <button class="submit-btn" type="submit" id="submit-btn">Submit</button>
+        </div>
+        <p id="result-el"></p>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
