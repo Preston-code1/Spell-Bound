@@ -1,3 +1,19 @@
+:root {
+    --bgcolor: white;
+    --textcolor: black;
+    --bordercolor: #ccc;
+    --keybindcolor: #808080;
+    --secondarycolor: #cccccc;
+}
+
+.darkmode {
+    --bgcolor: #121212;
+    --textcolor: #E0E0E0;
+    --bordercolor: #2A2A2A;
+    --keybindcolor: #B0B0B0;
+    --secondarycolor: #464646;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -5,9 +21,9 @@
 }
 
 body {
-    background-color: white;
+    background-color: var(--bgcolor);
     font-family: 'Fredoka', sans-serif;
-    color: black;
+    color: var(--textcolor);
 }
 
 nav {
@@ -15,8 +31,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     padding: 12px 20px;
-    border-bottom: 1px solid #ccc;
-    background-color: white;
+    border-bottom: 1px solid var(--bordercolor);
 }
 
 nav h1 {
@@ -32,30 +47,52 @@ nav ul {
 
 nav a {
     text-decoration: none;
-    color: black;
+    color: var(--textcolor);
     padding: 8px 12px;
     transition: background-color 0.2s ease;
+    position: relative;
+    text-decoration: none;
 }
 
-nav a {
-  position: relative;
-  text-decoration: none;
-  color: black;
-}
-
-nav a::after {
+nav li a::after {
   content: "";
   position: absolute;
   left: 0;
   bottom: -4px;
   width: 0%;
   height: 2px;
-  background-color: black;
+  background-color: var(--textcolor);
   transition: width 0.3s ease;
 }
 
-nav a:hover::after {
+nav li a:hover::after {
   width: 100%;
+}
+
+#theme-switch {
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#theme-switch svg {
+    fill: var(--textcolor);
+}
+
+#theme-switch svg:last-child {
+    display: none;
+}
+
+.darkmode #theme-switch svg:first-child {
+    display: none;
+}
+
+.darkmode #theme-switch svg:last-child {
+    display: block;
 }
 
 header {
@@ -63,12 +100,11 @@ header {
     margin-top: 50px;
     margin-left: auto;
     margin-right: auto;
-    padding: 20px; 
+    padding: 0 20px;
 }
 
 main {
     width: 450px;
-    margin-top: 25px;
     margin-left: auto;
     margin-right: auto;
     padding: 20px;
@@ -92,7 +128,7 @@ button:active {
 }
 
 .keybind {
-    color: gray;
+    color: var(--keybindcolor);
     font-size: 13px;
     margin-left: 45px;
 }
