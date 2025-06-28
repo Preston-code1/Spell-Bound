@@ -1,9 +1,9 @@
 :root {
     --bgcolor: white;
     --textcolor: black;
-    --bordercolor: #ccc;
+    --bordercolor: #cccccc;
     --keybindcolor: #808080;
-    --secondarycolor: #cccccc;
+    --secondarycolor: #ffffff;
 }
 
 .darkmode {
@@ -11,7 +11,7 @@
     --textcolor: #E0E0E0;
     --bordercolor: #2A2A2A;
     --keybindcolor: #B0B0B0;
-    --secondarycolor: #464646;
+    --secondarycolor: #1e1e1e;
 }
 
 * {
@@ -72,7 +72,7 @@ nav li a:hover::after {
 #theme-switch {
     height: 25px;
     width: 25px;
-    border-radius: 50%;
+    margin-top: -5px;
     background: none;
     display: flex;
     justify-content: center;
@@ -123,8 +123,13 @@ button {
     font-size: 16px;
 }
 
+button:hover {
+    background-color: #005f9e;
+    transform: scale(0.98);
+}
+
 button:active {
-  transform: scale(0.95);
+    transform: scale(0.95);
 }
 
 .keybind {
@@ -142,10 +147,12 @@ p {
 input {
     width: 75%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--bordercolor);
+    background-color: var(--secondarycolor);
     border-radius: 4px;
     font-size: 16px;
     margin-bottom: 20px;
+    color: var(--textcolor)
 }
 
 .submit-btn {
@@ -158,4 +165,13 @@ input {
     font-size: 16px;
     height: 40px;
     width: 20%;
+}
+
+.submit-btn:hover {
+    background-color: #7f8486;
+    transform: scale(0.98);
+}
+
+.submit-btn:active {
+    transform: scale(0.95);
 }
