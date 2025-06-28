@@ -32,8 +32,10 @@ function getDefinition(word) {
 
       if (definition) {
         document.getElementById("definition").textContent = definition;
+        document.getElementById("sound-btn").disabled = false;
       } else {
         document.getElementById("definition").textContent = "Loading...";
+        document.getElementById("sound-btn").disabled = true;
         getWord();
       }
     })
@@ -49,7 +51,7 @@ soundBtn.addEventListener("click", () => {
 });
 
 document.addEventListener('keydown', (event) => {
-  if (event.altKey && event.key === 'a') {
+  if (event.altKey && event.key === 'a' && soundBtn.disabled === false) {
     event.preventDefault();
     speakWord(currentWord);
   }
@@ -57,16 +59,17 @@ document.addEventListener('keydown', (event) => {
 
 function resetGame() {
     if (!waitingForNext) {
-    userAnswer = document.getElementById("text-input").value.trim().toLowerCase();
+      userAnswer = document.getElementById("text-input").value.trim().toLowerCase();
 
-    if (userAnswer === currentWord) {
-      resultEl.style.color = "green";
-      resultEl.textContent = `✅ Correct! You spelled "${currentWord}" correctly!`;
-    } else {
-      resultEl.style.color = "red";
-      resultEl.textContent = `❌ Incorrect. The correct spelling was "${currentWord}".`;
-    }
+      if (userAnswer === currentWord) {
+        resultEl.style.color = "green";
+        resultEl.textContent = `✅ Correct! You spelled "${currentWord}" correctly!`;
+      } else {
+        resultEl.style.color = "red";
+        resultEl.textContent = `❌ Incorrect. The correct spelling was "${currentWord}".`;
+      }
 
+    document.getElementById("text-input").disabled = true;
     submitBtn.textContent = "Next";
     waitingForNext = true;
   } else {
@@ -74,6 +77,7 @@ function resetGame() {
     document.getElementById("text-input").value = "";
     resultEl.textContent = "";
     submitBtn.textContent = "Submit";
+    document.getElementById("text-input").disabled = false;
     waitingForNext = false;
     getWord();
   }
@@ -84,7 +88,7 @@ submitBtn.addEventListener("click", () => {
     resetGame();
 });
 
-document.getElementById("text-input").addEventListener("keydown", (event) => {
+document.addEventListener("keydown", (event) => {
     if (event.key === 'Enter') {
         event.preventDefault();
         resetGame();
