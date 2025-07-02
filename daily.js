@@ -6,25 +6,37 @@ const inputEl = document.getElementById("text-input");
 let currentWord = "";
 const todayKey = new Date().toISOString().slice(0, 10); // Format: YYYY-MM-DD
 
+// Preload speech synthesis
+function preloadSpeech() {
+  const dummy = new SpeechSynthesisUtterance(" ");
+  dummy.volume = 0;
+  speechSynthesis.speak(dummy);
+}
+window.addEventListener("load", () => {
+  preloadSpeech();
+});
+
+// Function to fetch the definition of the word
 function getDefinition(word) {
   fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`)
-    .then(res => res.json())
-    .then(data => {
+    .then((res) => res.json())
+    .then((data) => {
       const meaning = data[0]?.meanings?.[0];
       const definition = meaning?.definitions?.[0]?.definition;
 
       if (definition) {
         document.getElementById("definition").textContent = definition;
       } else {
-        document.getElementById("definition").textContent = "Couldn't get definition.";
+        document.getElementById("definition").textContent =
+          "Couldn't get definition.";
       }
     })
-    .catch(err => {
+    .catch((err) => {
       console.error("Error fetching definition:", err);
-      document.getElementById("definition").textContent = "Error loading definition.";
     });
 }
 
+// Function to calculate the number of days since the start date
 function getDayOffset(startDateStr) {
   const today = new Date().setHours(0, 0, 0, 0);
   const start = new Date(startDateStr).setHours(0, 0, 0, 0);
@@ -32,18 +44,18 @@ function getDayOffset(startDateStr) {
   return diff;
 }
 
+//Gets the json file and loads the word for today
 function loadDailyWord() {
-  const startDate = "2025-06-29"; // Change to release date -- IMPORTANT 
+  const startDate = "2025-06-29"; // Change to release date -- IMPORTANT
 
   fetch("daily-words.json")
-    .then(res => res.json())
-    .then(wordList => {
+    .then((res) => res.json())
+    .then((wordList) => {
       const offset = getDayOffset(startDate);
       const index = offset % wordList.length;
       currentWord = wordList[index];
-      console.log("Today's word:", currentWord);
       getDefinition(currentWord);
-      
+
       // Check if user already answered
       if (localStorage.getItem(`answered-${todayKey}`) === "true") {
         resultEl.textContent = `🔒 You already guessed today! The word was ${currentWord}.`;
@@ -53,31 +65,7 @@ function loadDailyWord() {
     });
 }
 
-function speakWord(word) {
-  const utterance = new SpeechSynthesisUtterance(word);
-  utterance.lang = "en-US";
-  speechSynthesis.speak(utterance);
-}
-
-soundBtn.addEventListener("click", () => {
-  speakWord(currentWord);
-});
-
-document.addEventListener("keydown", (event) => {
-  if (event.altKey && event.key === 'a') {
-    event.preventDefault();
-    speakWord(currentWord);
-  }
-});
-
-submitBtn.addEventListener("click", handleSubmit);
-inputEl.addEventListener("keydown", (event) => {
-  if (event.key === 'Enter') {
-    event.preventDefault();
-    handleSubmit();
-  }
-});
-
+// Handle the submission of the answer
 function handleSubmit() {
   if (localStorage.getItem(`answered-${todayKey}`) === "true") return;
 
@@ -97,5 +85,35 @@ function handleSubmit() {
   submitBtn.disabled = true;
   inputEl.disabled = true;
 }
+
+// Function to speak the word
+function speakWord(word) {
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = "en-US";
+  setTimeout(() => {
+    speechSynthesis.speak(utterance);
+  }, 100); // 100ms delay for loading problems
+}
+
+// inputs to speak out the word   clicking and alt+a
+soundBtn.addEventListener("click", () => {
+  speakWord(currentWord);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.altKey && event.key === "a") {
+    event.preventDefault();
+    speakWord(currentWord);
+  }
+});
+
+// Handle submit button click   enter key and clicking
+submitBtn.addEventListener("click", handleSubmit);
+inputEl.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    handleSubmit();
+  }
+});
 
 loadDailyWord();
